@@ -2763,6 +2763,12 @@
     githubId = 3098430;
     name = "Eduard Bopp";
   };
+  em0lar = {
+    email = "nix@em0lar.dev";
+    github = "em0lar";
+    githubId = 11006031;
+    name = "Leo Maroni";
+  };
   emantor = {
     email = "rouven+nixos@czerwinskis.de";
     github = "emantor";
