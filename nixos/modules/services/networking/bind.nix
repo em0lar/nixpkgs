@@ -59,8 +59,8 @@ let
         blackhole { badnetworks; };
         forward first;
         forwarders { ${concatMapStrings (entry: " ${entry}; ") cfg.forwarders} };
-        directory "/run/named";
-        pid-file "/run/named/named.pid";
+        directory "${cfg.directory}";
+        pid-file "named.pid";
         ${cfg.extraOptions}
       };
 
@@ -156,6 +156,12 @@ in
         ";
       };
 
+      directory = mkOption {
+        type = types.str;
+        default = "/run/named";
+        description = "Working directory of BIND.";
+      };
+
       zones = mkOption {
         default = [ ];
         type = with types; coercedTo (listOf attrs) bindZoneCoerce (attrsOf (types.submodule bindZoneOptions));
@@ -228,8 +234,8 @@ in
           ${pkgs.bind.out}/sbin/rndc-confgen -c /etc/bind/rndc.key -u ${bindUser} -a -A hmac-sha256 2>/dev/null
         fi
 
-        ${pkgs.coreutils}/bin/mkdir -p /run/named
-        chown ${bindUser} /run/named
+        ${pkgs.coreutils}/bin/mkdir -p ${cfg.directory}
+        chown ${bindUser} ${cfg.directory}
       '';
 
       serviceConfig = {
